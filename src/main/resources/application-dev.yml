@@ -1,0 +1,66 @@
+spring:
+
+  datasource:
+    url: "jdbc:mysql://localhost:3306/HealthyGram"
+    username: "root"
+    password: "root"
+    driver-class-name: "com.mysql.cj.jdbc.Driver"
+
+  # sql.data 초기 설정 여부 (always, never)
+  sql:
+    init:
+      mode: never
+
+  jpa:
+    defer-datasource-initialization: true # ddl-auto 옵션 실행 후 data.sql 적용
+    hibernate:
+      ddl-auto: none               # entity에 맞게 자동 DB 처리 여부 (none, create ,create-drop, update)
+    properties:
+      hibernate:
+        dialect: "org.hibernate.dialect.MySQL8Dialect"
+        show_sql: false
+        format_sql: false
+        highlight_sql: false
+        use_sql_comments: false
+        generate_statistics: false
+
+  devtools:
+    restart:
+      enabled: false    # html만 재빌드
+
+  thymeleaf:
+    cache: false
+
+  redis:
+    host: localhost
+    port: 6379
+
+  mail:
+    host: devsecret
+    port: devsecret
+    username: devsecret
+    password: devsecret
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+            trust: smtp.naver.com
+
+cloud:
+  aws:
+    credentials:
+      accessKey: devsecret
+      secretKey: devsecret
+    region:
+      static: devsecret
+    stack:
+      auto: false
+    s3:
+      bucket: healthygram
+
+jwt:
+  secretKey: "devsecret"
+  accessTokenExpirationTime: devsecret  # 15분
+  refreshTokenExpirationTime: devsecret # 60분

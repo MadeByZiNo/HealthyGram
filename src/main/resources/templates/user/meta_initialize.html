@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/default_layout}">
+
+<main layout:fragment="content" class="flex-fill d-flex justify-content-center pt-5 pb-5" style="width: 100%;">
+  <!-- 기본정보 입력 카드 -->
+  <div style="width: 100%; max-width: 900px; padding: 4rem 3rem 2rem 3rem; background: white; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); border-radius: 20px; text-align: center;">
+
+    <!-- HealthyGram 텍스트 로고 -->
+    <a class="navbar-brand mb-5 d-block" href="#" style="font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 3rem; color: black; text-decoration: none;">
+      HealthyGram
+    </a>
+
+    <h3 class="mb-4" style="font-weight: 600;">기본 정보 입력</h3>
+
+    <!-- 기본정보 입력 폼 -->
+    <form id="metaForm" action="/api/users/meta" method="POST" enctype="multipart/form-data" style="width: 100%;">
+      <div class="row g-4">
+
+        <!-- 닉네임 (필수) -->
+        <div class="col-12">
+          <input type="text" name="nickname" placeholder="닉네임 (필수)" class="form-control mb-2" required style="height: 3.5rem; font-size: 1.3rem;">
+        </div>
+
+        <!-- 이름 (선택) -->
+        <div class="col-12">
+          <input type="text" name="name" placeholder="이름 (선택)" class="form-control mb-2" style="height: 3.5rem; font-size: 1.3rem;">
+        </div>
+
+        <!-- 성별 -->
+        <div class="col-12">
+          <select name="gender" class="form-control mb-2" style="height: 3.5rem; font-size: 1.3rem;">
+            <option value="MALE">남자</option>
+            <option value="FEMALE">여자</option>
+            <option value="PRIVATE">비공개</option>
+          </select>
+        </div>
+
+        <!-- 생년월일 -->
+        <div class="col-12">
+          <input type="date" name="birthDate" class="form-control mb-2" style="height: 3.5rem; font-size: 1.3rem;">
+          <small style="font-size: 0.9rem; color: gray;">선택하지 않으면 비공개 처리됩니다.</small>
+        </div>
+
+        <!-- 프로필 이미지 -->
+        <div class="col-12">
+          <input type="file" name="profileImage" accept="image/png, image/jpeg" class="form-control mb-2" style="height: 3.5rem; font-size: 1.3rem;">
+          <small style="font-size: 0.9rem; color: gray;">PNG 또는 JPG 파일만 업로드 가능합니다. (선택)</small>
+        </div>
+
+        <!-- 자기소개 -->
+        <div class="col-12">
+          <textarea name="bio" placeholder="자기소개 (선택)" class="form-control mb-2" rows="3" style="font-size: 1.2rem;"></textarea>
+        </div>
+
+        <!-- 에러 메시지 영역 -->
+        <div id="errorMessage" style="color: red; font-size: 1rem; margin-bottom: 1rem;"></div>
+
+        <!-- 저장 버튼 -->
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary w-100" style="height: 3.5rem; font-size: 1.4rem;">저장하기</button>
+        </div>
+
+      </div>
+    </form>
+
+  </div>
+
+  <script>
+    document.getElementById('metaForm').addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      const formData = new FormData(this);
+
+      const response = await fetch('/api/users/meta', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        window.location.href = '/';
+      } else {
+        const errorData = await response.json();
+        document.getElementById('errorMessage').innerText = errorData.message;
+      }
+    });
+  </script>
+</main>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/default_layout}">
+
+<main layout:fragment="content" class="flex-fill d-flex justify-content-center pt-5 pb-5" style="width: 100%;">
+  <div style="width: 100%; max-width: 600px; padding: 4rem 3rem 2rem 3rem; background: white; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); border-radius: 20px; text-align: center;">
+
+    <a class="navbar-brand mb-4 d-block" href="#" style="font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 2.5rem; color: black; text-decoration: none;">
+      회원가입
+    </a>
+
+    <!-- 이메일 입력 -->
+    <div class="mb-3 text-start">
+      <label class="form-label">이메일</label>
+      <div class="input-group">
+        <input type="email" id="email" class="form-control" placeholder="이메일을 입력하세요">
+        <button class="btn btn-outline-secondary" type="button" onclick="sendCode()">인증코드 발송</button>
+      </div>
+
+      <!-- 타이머: 버튼 밑에 작게 -->
+      <div id="timerSection" class="mt-2" style="display: none; font-size: 0.9rem; color: gray;">
+        <span id="timer">재발송까지 03:00</span>
+      </div>
+    </div>
+
+    <!-- 인증코드 입력 -->
+    <div class="mb-3 text-start">
+      <label class="form-label">인증코드</label>
+      <div class="input-group">
+        <input type="text" id="code" class="form-control" placeholder="인증코드 입력" disabled>
+        <button class="btn btn-outline-secondary" type="button" id="verifyBtn" onclick="verifyCode()" disabled>인증 확인</button>
+      </div>
+      <div id="verifyResult" class="mt-1 text-success" style="display: none;">인증 완료</div>
+    </div>
+
+    <!-- 비밀번호 입력 -->
+    <div class="mb-3 text-start">
+      <label class="form-label">비밀번호</label>
+      <input type="password" id="password" class="form-control" placeholder="비밀번호 입력">
+    </div>
+
+    <!-- 비밀번호 확인 -->
+    <div class="mb-4 text-start">
+      <label class="form-label">비밀번호 확인</label>
+      <input type="password" id="confirmPassword" class="form-control" placeholder="비밀번호 재입력">
+    </div>
+
+    <!-- 회원가입 버튼 -->
+    <button class="btn btn-primary w-100" style="height: 3.5rem; font-size: 1.2rem;" onclick="register()">회원가입 완료</button>
+
+  </div>
+
+  <script>
+    let emailVerified = false;
+    let timeout = 180; // 3분 (180초)
+    let countdown;
+
+    function startCountdown() {
+      const timerText = document.getElementById("timer");
+      countdown = setInterval(function() {
+        if (timeout <= 0) {
+          clearInterval(countdown);
+          document.getElementById("sendCodeBtn").disabled = false;
+          document.getElementById("sendCodeBtn").innerText = "인증코드 발송";
+          document.getElementById("timerSection").style.display = "none";
+        } else {
+          const minutes = Math.floor(timeout / 60);
+          const seconds = timeout % 60;
+          timerText.innerText = `재발송까지 ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+          timeout--;
+        }
+      }, 1000);
+    }
+
+    function sendCode() {
+      const email = document.getElementById('email').value;
+      if (!email) {
+        alert('이메일을 입력해주세요.');
+        return;
+      }
+
+      fetch(`/api/auth/email/send-code?email=${email}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            alert('인증코드가 발송되었습니다.');
+            document.getElementById("sendCodeBtn").disabled = true;
+            document.getElementById("sendCodeBtn").innerText = "재발송";
+            document.getElementById("email").disabled = true;
+            document.getElementById("code").disabled = false;
+            document.getElementById("verifyBtn").disabled = false;
+            document.getElementById("timerSection").style.display = "block";
+            startCountdown();
+          }
+        });
+    }
+
+    function verifyCode() {
+      const email = document.getElementById('email').value;
+      const code = document.getElementById('code').value;
+
+      fetch('/api/auth/email/verify-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, code })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          emailVerified = true;
+          document.getElementById('verifyResult').style.display = 'block';
+          alert('이메일 인증 성공!');
+          document.getElementById("verifyBtn").disabled = true;
+          document.getElementById("code").disabled = true;
+        } else {
+          alert('인증 실패. 코드를 다시 확인하세요.');
+        }
+      });
+    }
+
+    function register() {
+      if (!emailVerified) {
+        alert('이메일 인증을 먼저 완료해주세요.');
+        return;
+      }
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (password !== confirmPassword) {
+        alert('비밀번호가 일치하지 않습니다.');
+        return;
+      }
+
+      fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, confirmPassword })
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert('회원가입이 완료되었습니다!');
+        window.location.href = '/auth/login';  // 가입 후 로그인 페이지로 이동
+      });
+    }
+  </script>
+</main>
+</html>

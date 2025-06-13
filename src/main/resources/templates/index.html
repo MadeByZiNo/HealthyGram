@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/default_layout}">
+<head>
+    <title>피드</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="row">
+        <!-- 피드 반복 영역 -->
+        <div class="col-12 mb-4">
+            <div class="card shadow-sm" style="height: 100%; display: flex; flex-direction: column;">
+                <div class="d-flex align-items-center mb-2">
+                    <img src="https://via.placeholder.com/32" class="rounded-circle" width="32" height="32" alt="프로필">
+                    <a href="#" class="ms-2 text-dark fw-semibold">닉네임</a>
+                </div>
+                <img src="https://via.placeholder.com/600x400" class="card-img-top" alt="게시글 이미지" style="object-fit: cover; height: 60vh;">
+                <div class="card-body" style="flex-grow: 1;">
+                    <p class="card-text">게시글 내용 1</p>
+                    <div class="d-flex justify-content-between mt-3">
+                        <div>
+                            <button class="btn p-0 me-3 border-0 bg-transparent"><i class="bi bi-heart"></i></button>
+                            <span>10</span>
+                            <button class="btn p-0 ms-3 border-0 bg-transparent"><i class="bi bi-chat"></i></button>
+                            <span>2</span>
+                        </div>
+                        <div>
+                            <span class="text-muted small">2025-04-28 11:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 두 번째 피드 -->
+        <div class="col-12 mb-4">
+            <div class="card shadow-sm" style="height: 100%; display: flex; flex-direction: column;">
+                <div class="d-flex align-items-center mb-2">
+                    <img src="https://via.placeholder.com/32" class="rounded-circle" width="32" height="32" alt="프로필">
+                    <a href="#" class="ms-2 text-dark fw-semibold">닉네임</a>
+                </div>
+                <img src="https://via.placeholder.com/600x400" class="card-img-top" alt="게시글 이미지" style="object-fit: cover; height: 60vh;">
+                <div class="card-body" style="flex-grow: 1;">
+                    <p class="card-text">게시글 내용 2</p>
+                    <div class="d-flex justify-content-between mt-3">
+                        <div>
+                            <button class="btn p-0 me-3 border-0 bg-transparent"><i class="bi bi-heart"></i></button>
+                            <span>15</span>
+                            <button class="btn p-0 ms-3 border-0 bg-transparent"><i class="bi bi-chat"></i></button>
+                            <span>5</span>
+                        </div>
+                        <div>
+                            <span class="text-muted small">2025-04-28 11:05</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
+
+
