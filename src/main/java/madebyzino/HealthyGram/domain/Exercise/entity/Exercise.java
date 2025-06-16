@@ -5,21 +5,21 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-    @Entity
-    @NoArgsConstructor
-    public class Exercise {
+@Entity
+@NoArgsConstructor
+public class Exercise {
 
-        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-        @Column(name = "name", nullable = false)
-        private String name;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-        // 운동 부위
-        @Enumerated(EnumType.STRING)
-        private List<Part> parts;
+    // 운동 부위
+    @Enumerated(EnumType.STRING)
+    private List<Part> parts;
 
-        // 운동 방법
-        @Enumerated(EnumType.STRING)
-        private ExerciseMethod exerciseMethod;
-    }
+    // 운동 방법
+    @Enumerated(EnumType.STRING)
+    private ExerciseMethod exerciseMethod;
+}
