@@ -14,7 +14,9 @@ public enum ErrorCode {
 
     INVALID_USER("E020", "존재하지 않는 유저입니다."),
 
-
+    // 피드 관련
+    INVALID_FEED("E050", "존재하지 않는 피드입니다."),
+    FEED_ACCESS_DENIED("E051", "피드 접급 권한이 없습니다."),
 
     // 서버 내부 에러
     SERVER_INTERNAL_ERROR("500", "서버 내부에 오류가 있습니다."),
