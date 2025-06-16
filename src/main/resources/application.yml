@@ -1,5 +1,5 @@
 spring:
   profiles:
-    actives: local
+    active: local
   application:
     name: HealthyGram
